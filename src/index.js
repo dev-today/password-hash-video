@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 
 import {
   FlexBox,
-  Heading,
   SpectacleLogo,
+  Heading,
   UnorderedList,
   CodeSpan,
   OrderedList,
@@ -14,6 +14,7 @@ import {
   Appear,
   Stepper,
   Slide,
+  Link,
   Deck,
   Text,
   Grid,
@@ -28,8 +29,13 @@ import {
   TableCell,
   TableHeader,
   TableRow,
+  Quote,
 } from "spectacle";
 import diagram1 from "../images/PasswordHash (1).png";
+import devTodayImage from "../images/devtoday/svg/Color logo - no background.svg";
+import almacenamientoPwd from "../images/PasswordHash - Almacenamiento pwd.svg";
+import hashSaltSlide from "../images/PasswordHash - Hash Salt.svg";
+import hashSlide from "../images/PasswordHash - Hash.svg";
 
 const formidableLogo =
   "https://avatars2.githubusercontent.com/u/5078602?s=280&v=4";
@@ -52,8 +58,9 @@ const template = () => (
     width={1}
   >
     <FlexBox padding="0 1em">
-      <FullScreen />
-      <Text paddingLeft="1em">Dev Today</Text>
+      {/* <FullScreen /> */}
+      <Image src={devTodayImage} size={120} />
+      {/* <Text paddingLeft="1em">Dev Today</Text> */}
     </FlexBox>
     <Box padding="1em">
       <Progress />
@@ -81,12 +88,11 @@ const SlideFragments = () => (
     </Slide>
   </>
 );
-
-const Presentation = () => (
-  <Deck theme={theme} template={template}>
+const FirstSlide = () => {
+  return (
     <Slide>
       <FlexBox height="100%">
-        <SpectacleLogo size={500} />
+        <Text fontSize={100}>¿Como se almacenan las contraseñas?</Text>
       </FlexBox>
       <Notes>
         Spectacle supports notes per slide.
@@ -96,256 +102,69 @@ const Presentation = () => (
         </ol>
       </Notes>
     </Slide>
+  );
+};
+const Presentation = () => (
+  <Deck theme={theme} template={template}>
+    <FirstSlide />
     <Slide>
-      <CodePane language="js">
-        {`
-bcrypt.genSalt(10, (err, salt) => {
-  bcrypt.hash(plaintextPassword, salt, function(err, hash) {
-      // Store hash in the database
-  });
-})
-`}
-      </CodePane>
-      <Image src={diagram1} />
+      <Heading fontSize={"h2"} margin="0px">
+        ¿Como se almacenan las contraseñas?
+      </Heading>
+      <Image src={almacenamientoPwd} />
     </Slide>
     <Slide>
-      <FlexBox height="100%" flexDirection="column">
-        <Heading margin="0px" fontSize="150px">
-          ✨<i>Spectacle</i> ✨
-        </Heading>
-        <Heading margin="0px" fontSize="h2">
-          A ReactJS Presentation Library
-        </Heading>
-        <Heading margin="0px 32px" color="primary" fontSize="h3">
-          Where you can write your decks in JSX, Markdown, or MDX!
-        </Heading>
+      <Heading fontSize={"h2"} margin="0px">
+        Que es un hash
+      </Heading>
+      <Text>
+        Hash es una funcion que convierte un conjunto de datos de cualquier
+        tamaño a un valor de tamaño fijo
+      </Text>
+      <FlexBox>
+        <Image src={hashSlide} />
       </FlexBox>
     </Slide>
-    <Slide
-      transition={{
-        from: {
-          transform: "scale(0.5) rotate(45deg)",
-          opacity: 0,
-        },
-        enter: {
-          transform: "scale(1) rotate(0)",
-          opacity: 1,
-        },
-        leave: {
-          transform: "scale(0.2) rotate(315deg)",
-          opacity: 0,
-        },
-      }}
-      backgroundColor="tertiary"
-      backgroundImage="url(https://github.com/FormidableLabs/dogs/blob/main/src/beau.jpg?raw=true)"
-      backgroundOpacity={0.5}
-    >
-      <Heading>Custom Backgrounds</Heading>
-      <UnorderedList>
-        <ListItem>
-          <CodeSpan>backgroundColor</CodeSpan>
-        </ListItem>
-        <ListItem>
-          <CodeSpan>backgroundImage</CodeSpan>
-        </ListItem>
-        <ListItem>
-          <CodeSpan>backgroundOpacity</CodeSpan>
-        </ListItem>
-        <ListItem>
-          <CodeSpan>backgroundSize</CodeSpan>
-        </ListItem>
-        <ListItem>
-          <CodeSpan>backgroundPosition</CodeSpan>
-        </ListItem>
-        <ListItem>
-          <CodeSpan>backgroundRepeat</CodeSpan>
-        </ListItem>
-      </UnorderedList>
+    <Slide>
+      <Heading fontSize={"h2"} margin="0px">
+        Que significa <CodeSpan>{`saltear`}</CodeSpan> en un hash
+      </Heading>
+      <Text>
+        Es el proceso de añadir un valor aleatorio a un conjunto de datos antes
+        de realizar el hash para evitar ataques de diccionario y rainbow tables
+      </Text>
+      <FlexBox>
+        <Image src={hashSaltSlide} />
+      </FlexBox>
     </Slide>
     <Slide>
-      <Heading>Animated Elements</Heading>
-      <OrderedList>
+      <Heading fontSize={"h2"} margin="0px">
+        Como almacenar contraseñas de manera
+      </Heading>
+      <UnorderedList>
         <Appear>
-          <ListItem>Elements can animate in!</ListItem>
-        </Appear>
-        <Appear>
-          <ListItem>Out of order</ListItem>
-        </Appear>
-        <Appear priority={0}>
           <ListItem>
-            Just identify the order with the prop <CodeSpan>priority</CodeSpan>!
+            Utiliza un sistema de hash seguro (SHA256, SHA512)
           </ListItem>
         </Appear>
-      </OrderedList>
+        <Appear>
+          <ListItem>Utiliza salt para realizar el hash</ListItem>
+        </Appear>
+        <Appear>
+          <ListItem>Plus - Encripta la contraseña</ListItem>
+        </Appear>
+      </UnorderedList>
     </Slide>
+
     <Slide>
-      <FlexBox>
-        <Text>These</Text>
-        <Text>Text</Text>
-        <Text color="secondary">Items</Text>
-        <Text fontWeight="bold">Flex</Text>
-      </FlexBox>
-      <Grid gridTemplateColumns="1fr 2fr" gridColumnGap={15}>
-        <Box backgroundColor="primary">
-          <Text color="secondary">Single-size Grid Item</Text>
-        </Box>
-        <Box backgroundColor="secondary">
-          <Text>Double-size Grid Item</Text>
-        </Box>
-      </Grid>
-      <Grid
-        gridTemplateColumns="1fr 1fr 1fr"
-        gridTemplateRows="1fr 1fr 1fr"
-        alignItems="center"
-        justifyContent="center"
-        gridRowGap={1}
+      <Heading fontSize={"h1"}>Demo time</Heading>
+      <Link
+        href="https://colab.research.google.com/drive/1QeetaRvkVF1XYoje_dbTK0f0oCWfqsSp?usp=sharing"
+        target={"_blank"}
       >
-        {Array(9)
-          .fill("")
-          .map((_, index) => (
-            <FlexBox paddingTop={0} key={`formidable-logo-${index}`} flex={1}>
-              <Image src={formidableLogo} width={100} />
-            </FlexBox>
-          ))}
-      </Grid>
+        https://colab.research.google.com/drive/1QeetaRvkVF1XYoje_dbTK0f0oCWfqsSp?usp=sharing
+      </Link>
     </Slide>
-    <SlideFragments />
-    <Slide>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableCell
-              backgroundColor="#333333"
-              border="1px solid white"
-              p="10px"
-            ></TableCell>
-            <TableCell
-              backgroundColor="#333333"
-              border="1px solid white"
-              p="10px"
-            >
-              <CodeSpan fontSize="code">TIMER_END</CodeSpan>
-            </TableCell>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell
-              backgroundColor="#333333"
-              border="1px solid white"
-              p="10px"
-            >
-              <CodeSpan fontSize="code">green</CodeSpan>
-            </TableCell>
-            <TableCell border="1px solid white" p="10px">
-              <CodeSpan fontSize="code">yellow</CodeSpan>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell
-              backgroundColor="#333333"
-              border="1px solid white"
-              p="10px"
-            >
-              <CodeSpan fontSize="code">yellow</CodeSpan>
-            </TableCell>
-            <TableCell border="1px solid white" p="10px">
-              <CodeSpan fontSize="code">red</CodeSpan>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell
-              backgroundColor="#333333"
-              border="1px solid white"
-              p="10px"
-            >
-              <CodeSpan fontSize="code">red</CodeSpan>
-            </TableCell>
-            <TableCell border="1px solid white" p="10px">
-              <CodeSpan fontSize="code">green</CodeSpan>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </Slide>
-    <Slide>
-      <CodePane language="jsx">{`
-        import { createClient, Provider } from 'urql';
-
-        const client = createClient({ url: 'https://0ufyz.sse.codesandbox.io' });
-
-        const App = () => (
-          <Provider value={client}>
-            <Todos />
-          </Provider>
-        );
-        `}</CodePane>
-      <Box height={20} />
-      <CodePane language="java" showLineNumbers={false}>{`
-        public class NoLineNumbers {
-          public static void main(String[] args) {
-            System.out.println("Hello");
-          }
-        }
-        `}</CodePane>
-    </Slide>
-    <div>
-      <Slide>
-        <Heading>This is a slide embedded in a div</Heading>
-      </Slide>
-    </div>
-    <MarkdownSlide componentProps={{ color: "yellow" }}>
-      {`
-        # This is a Markdown Slide
-
-        - You can pass props down to all elements on the slide.
-        - Just use the \`componentProps\` prop.
-        `}
-    </MarkdownSlide>
-    <MarkdownSlide animateListItems>
-      {`
-       # This is also a Markdown Slide
-
-       It uses the \`animateListItems\` prop.
-
-       - Its list items...
-       - ...will appear...
-       - ...one at a time.
-      `}
-    </MarkdownSlide>
-    <Slide>
-      <Grid
-        flex={1}
-        gridTemplateColumns="50% 50%"
-        gridTemplateRows="50% 50%"
-        height="100%"
-      >
-        <FlexBox alignItems="center" justifyContent="center">
-          <Heading>This is a 4x4 Grid</Heading>
-        </FlexBox>
-        <FlexBox alignItems="center" justifyContent="center">
-          <Text textAlign="center">
-            With all the content aligned and justified center.
-          </Text>
-        </FlexBox>
-        <FlexBox alignItems="center" justifyContent="center">
-          <Text textAlign="center">
-            It uses Spectacle <CodeSpan>{"<Grid />"}</CodeSpan> and{" "}
-            <CodeSpan>{"<FlexBox />"}</CodeSpan> components.
-          </Text>
-        </FlexBox>
-        <FlexBox alignItems="center" justifyContent="center">
-          <Box width={200} height={200} backgroundColor="secondary" />
-        </FlexBox>
-      </Grid>
-    </Slide>
-    <MarkdownSlideSet>
-      {`
-        # This is the first slide of a Markdown Slide Set
-        ---
-        # This is the second slide of a Markdown Slide Set
-        `}
-    </MarkdownSlideSet>
   </Deck>
 );
 

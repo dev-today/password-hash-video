@@ -54,7 +54,7 @@ module.exports = {
   // Default for boilerplate generation.
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Spectacle presentation',
+      title: '¿Como se almacenan las contraseñas en la base de datos?',
       template: './src/index.html'
     })
   ]
